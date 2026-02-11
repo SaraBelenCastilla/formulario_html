@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Insurance Quoter - Formulario</title>
+  <style>
+    :root{
+      --bg: #0b1220;
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --focus: rgba(99, 102, 241, .55);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(99,102,241,.25), transparent 60%),
+                  radial-gradient(900px 600px at 90% 20%, rgba(16,185,129,.18), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 28px 16px;
+    }
+    .wrap{
+      width: min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+    }
+    @media (max-width: 900px){
+      .wrap{grid-template-columns: 1fr}
+    }
+    .panel{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 22px;
+    }
+    h1{
+      font-size: 22px;
+      margin: 0 0 8px;
+      letter-spacing: .2px;
+    }
+    p{
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 640px){
+      .grid{grid-template-columns: 1fr}
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+    }
+    label{
+      font-size: 13px;
+      color: var(--muted);
+    }
+    input, select, textarea{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(10, 16, 30, .65);
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+    textarea{min-height: 110px; resize: vertical}
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(99,102,241,.65);
+      box-shadow: 0 0 0 4px var(--focus);
+    }
+    .hint{
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      margin-top: -2px;
+    }
+    .actions{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content:flex-end;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    button{
+      cursor: pointer;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .btn-primary{
+      background: linear-gradient(135deg, rgba(99,102,241,.95), rgba(16,185,129,.92));
+      color: #0b1220;
+    }
+    .btn-ghost{
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.85);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    .small{
+      font-size: 12px;
+      color: rgba(255,255,255,.60);
+      line-height:1.55;
+      margin-top: 10px;
+    }
+    .ok{
+      display:none;
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      background: rgba(16,185,129,.14);
+      border: 1px solid rgba(16,185,129,.35);
+      color: rgba(255,255,255,.92);
+      font-size: 13px;
+    }
+    .err{
+      display:none;
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      background: rgba(239,68,68,.14);
+      border: 1px solid rgba(239,68,68,.35);
+      color: rgba(255,255,255,.92);
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <section class="panel">
+      <h1>Sistema de Cotización de Seguros</h1>
+      <p>Completa los datos y recibirás una confirmación de envío. Este formulario envía la información a un flujo automatizado en n8n para registrarla y notificar por correo.</p>
+
+      <!--
+        IMPORTANTE:
+        Reemplaza ACTION_URL por tu webhook de n8n.
+
+        TEST:
+        https://TU-DOMINIO/webhook-test/smart-insurance-quoter
+
+        PRODUCCIÓN:
+        https://TU-DOMINIO/webhook/smart-insurance-quoter
+      -->
+      <form id="insuranceForm"
+            action="https://n8n.srv1273143.hstgr.cloud/webhook-test/cotizador-seguro"
+            method="POST"
+            accept-charset="UTF-8">
+
+        <div class="grid">
+          <div class="field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" required maxlength="100" placeholder="Tu nombre completo" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required maxlength="150" placeholder="tu@email.com" />
+          </div>
+
+          <div class="field">
+            <label for="tipoSeguro">Tipo de seguro</label>
+            <select id="tipoSeguro" name="tipoSeguro" required>
+              <option value="" selected disabled>Selecciona una opción</option>
+              <option value="Vida">Vida</option>
+              <option value="Salud">Salud</option>
+              <option value="Viajes">Viajes</option>
+              <option value="Vehículo">Vehículo</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="edad">Edad</label>
+            <input id="edad" name="edad" type="number" required min="18" max="99" placeholder="Ej: 32" />
+            <div class="hint">Rango permitido: 18 a 99</div>
+          </div>
+
+          <div class="field">
+            <label for="pais">País</label>
+            <input id="pais" name="pais" type="text" required maxlength="80" placeholder="Ej: Colombia" />
+          </div>
+
+          <div class="field">
+            <label for="cobertura">Cobertura deseada</label>
+            <select id="cobertura" name="cobertura" required>
+              <option value="" selected disabled>Selecciona una opción</option>
+              <option value="Básica">Básica</option>
+              <option value="Media">Media</option>
+              <option value="Premium">Premium</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="montoAsegurado">Monto asegurado</label>
+            <select id="montoAsegurado" name="montoAsegurado" required>
+              <option value="" selected disabled>Selecciona un monto</option>
+              <option value="5000">USD 5.000</option>
+              <option value="10000">USD 10.000</option>
+              <option value="25000">USD 25.000</option>
+              <option value="50000">USD 50.000</option>
+              <option value="100000">USD 100.000</option>
+              <option value="200000">USD 200.000</option>
+            </select>
+            <div class="hint">Puedes ajustar estos rangos según tu negocio.</div>
+          </div>
+
+          <div class="field">
+            <label for="telefono">Teléfono (opcional)</label>
+            <input id="telefono" name="telefono" type="tel" maxlength="30" placeholder="Ej: +57 300 000 0000" />
+          </div>
+
+          <div class="field" style="grid-column: 1 / -1;">
+            <label for="observaciones">Observaciones</label>
+            <textarea id="observaciones" name="observaciones" maxlength="2000"
+                      placeholder="Detalles adicionales: condiciones, fechas, ciudad, necesidades especiales..."></textarea>
+            <div class="hint">Máximo 2000 caracteres.</div>
+          </div>
+        </div>
+
+        <!-- Campos extra útiles para trazabilidad -->
+        <input type="hidden" name="source" value="smart-insurance-quoter-form" />
+        <input type="hidden" name="submittedAt" id="submittedAt" value="" />
+
+        <div class="actions">
+          <button type="reset" class="btn-ghost">Limpiar</button>
+          <button type="submit" class="btn-primary">Enviar solicitud</button>
+        </div>
+
+        <div id="okMsg" class="ok">Solicitud enviada correctamente. Gracias.</div>
+        <div id="errMsg" class="err">No se pudo enviar. Intenta nuevamente.</div>
+        <div class="small">
+          Nota: si estás probando, usa la URL <strong>https://n8n.srv1273143.hstgr.cloud/webhook-test/cotizador-seguro</strong> de n8n. En producción, usa <strong>https://n8n.srv1273143.hstgr.cloud/webhook/cotizador-seguro</strong> y asegúrate de que el workflow esté activo.
+        </div>
+      </form>
+    </section>
+
+    <aside class="panel">
+      <h1>Notas técnicas</h1>
+      <p>Este formulario está pensado para integrarse con un Webhook de n8n y enviar datos por POST en formato form-url-encoded.</p>
+
+      <div class="badge">
+        Ruta sugerida del Webhook: <strong>/cotizador-seguro</strong>
+      </div>
+
+      <div class="small">
+        <strong>Recomendación:</strong> en el nodo Webhook de n8n usa método <strong>POST</strong> y responde con un JSON simple.
+        Luego el nodo MySQL hace el INSERT y el nodo Gmail envía la notificación.
+      </div>
+
+      <div class="small">
+        <strong>Tip:</strong> si quieres recibir JSON en lugar de form-data, se puede enviar con fetch().
+        Para este caso, el submit tradicional del form es suficiente y compatible.
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Marca timestamp local en el submit
+    document.getElementById("submittedAt").value = new Date().toISOString();
+
+    // UX: mensajes simples (opcional). Esto no intercepta el envío.
+    const form = document.getElementById("insuranceForm");
+    const okMsg = document.getElementById("okMsg");
+    const errMsg = document.getElementById("errMsg");
+
+    form.addEventListener("submit", () => {
+      okMsg.style.display = "none";
+      errMsg.style.display = "none";
+      // Si deseas, aquí podrías interceptar con fetch() para mostrar confirmación inmediata.
+    });
+  </script>
+</body>
+</html>
